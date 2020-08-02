@@ -58,9 +58,21 @@ def RTO(a,b,text):
     vehicleName = ['Honda','Activa','Hero','Ford','Maruti','WagonR']
     vehicleRegion = ['Ghaziabad','Meerut','Punjab','Gwalior','Jharkhand','Kanpur']
     vehicleClass = ['Car','Scooter','Bike','Truck','Bus']
-    
+    parkingSpace = {101:true, 102:true, 103:true}
     currentDT = datetime.datetime.now()
-    
+
+    #Parking System Entry Implementation
+    freeSpace = false
+    freeSpaceValue = null
+    for space in parkingSpace:
+        if(parkingSpace[space]==true):
+            freeSpace=true
+            freeSpaceValue=space
+            parkingSpace[space]=false
+
+    if freeSpace == false: 
+        print("NO Empty Parking Found! Access denied!")
+        sys.exit()
     
     vehicleOwner = random.choice(vehicleOwner)
     vehicleName = random.choice(vehicleName)
@@ -75,7 +87,8 @@ def RTO(a,b,text):
             "name": str(vehicleOwner),
             "make": str(vehicleName),
             "region": str(vehicleRegion),
-            "vclass": str(vehicleClass)
+            "vclass": str(vehicleClass),
+            "parkingspace": str(parkingSpace)
              }
 
     print(data)
