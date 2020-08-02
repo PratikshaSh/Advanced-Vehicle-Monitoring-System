@@ -88,7 +88,8 @@ Detection Image Before crossing the line</img>
 <h1 id="working">How It Works</h1>
 
  - When we run the model , Number plate will be detected with an average **accuracy of 97%** of the vehicles crossing the Line drawn , Then the Number Plate will be cropped and filtered and passed through The OCR and we will get the Number plate. Then the Numbe Plate we get , then Processed through the RTO Database and If the Data is Found , Then it will be updated in the Storage as well as App too. But If No data is Found in the RTO database , then it will cause an Alert in the Admin Database in the app , and can only be resolved by Manually entering the Number plate in the App .
-
+ 
+Check the github repository for android app based on the above model at  https://github.com/praveen4030/CB31_ERROR_404_WIMDR
 ## Troubleshooting
 
 0. If you encounter any error, please make sure you follow the instructions **exactly** (word by word). Once you are familiar with the code, you're welcome to modify it as needed but in order to minimize error, I encourage you to not deviate from the instructions above.  
