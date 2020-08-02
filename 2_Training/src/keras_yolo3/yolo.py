@@ -371,52 +371,52 @@ class YOLO(object):
                 pred_class.append(predicted_class)
                 box = out_boxes[i]
                 score = out_scores[i]
-                if score>0.8:
+                
                     
-                    label = "{} {:.2f}".format(predicted_class, score)
-                    draw = ImageDraw.Draw(image)
-                    label_size = draw.textsize(label, font)
-        	    
-                    top, left, bottom, right = box
-                    top = max(0, np.floor(top + 0.5).astype("int32"))
-                    left = max(0, np.floor(left + 0.5).astype("int32"))
-                    bottom = min(image.size[1], np.floor(bottom + 0.5).astype("int32"))
-                    right = min(image.size[0], np.floor(right + 0.5).astype("int32"))
-        
-                    # image was expanded to model_image_size: make sure it did not pick
-                    # up any box outside of original image (run into this bug when
-                    # lowering confidence threshold to 0.01)
-                    if top > image.size[1] or right > image.size[0]:
-                        continue
-                    '''if show_stats:
-                        print(label, (left, top), (right, bottom))'''
-                    # Predicting Plate 
-                   
-                    
-                    out_prediction.append([left, top, right, bottom, c, score])
-        
-                    if top - label_size[1] >= 0:
-                        text_origin = np.array([left, top - label_size[1]])
-                    else:
-                        text_origin = np.array([left, bottom])
-        
-                    # My kingdom for a good redistributable image drawing library.
-                    x = left
-                    y = top
-                    w = right-left
-                    h = bottom-top
-                    tracking_box.append([x,y,w,h])
-                    for i in range(thickness):
-                        draw.rectangle(
-                            [left + i, top + i, right - i, bottom - i], outline=self.colors[c]
-                        )
+                label = "{} {:.2f}".format(predicted_class, score)
+                draw = ImageDraw.Draw(image)
+                label_size = draw.textsize(label, font)
+    	    
+                top, left, bottom, right = box
+                top = max(0, np.floor(top + 0.5).astype("int32"))
+                left = max(0, np.floor(left + 0.5).astype("int32"))
+                bottom = min(image.size[1], np.floor(bottom + 0.5).astype("int32"))
+                right = min(image.size[0], np.floor(right + 0.5).astype("int32"))
+    
+                # image was expanded to model_image_size: make sure it did not pick
+                # up any box outside of original image (run into this bug when
+                # lowering confidence threshold to 0.01)
+                if top > image.size[1] or right > image.size[0]:
+                    continue
+                '''if show_stats:
+                    print(label, (left, top), (right, bottom))'''
+                # Predicting Plate 
+               
+                
+                out_prediction.append([left, top, right, bottom, c, score])
+    
+                if top - label_size[1] >= 0:
+                    text_origin = np.array([left, top - label_size[1]])
+                else:
+                    text_origin = np.array([left, bottom])
+    
+                # My kingdom for a good redistributable image drawing library.
+                x = left
+                y = top
+                w = right-left
+                h = bottom-top
+                tracking_box.append([x,y,w,h])
+                for i in range(thickness):
                     draw.rectangle(
-                        [tuple(text_origin), tuple(text_origin + label_size)],
-                        fill=self.colors[c],
+                        [left + i, top + i, right - i, bottom - i], outline=self.colors[c]
                     )
-            
-                    draw.text(text_origin, label, fill=(0, 0, 0), font=font)
-                    del draw
+                draw.rectangle(
+                    [tuple(text_origin), tuple(text_origin + label_size)],
+                    fill=self.colors[c],
+                )
+        
+                draw.text(text_origin, label, fill=(0, 0, 0), font=font)
+                del draw
                     
             else:
                 continue

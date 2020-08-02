@@ -41,7 +41,7 @@ DTKey = currentDTKey.strftime("%d%m%Y")
 
 warnings.filterwarnings('ignore')
 
-def RTO(vehicleTime,text):
+def RTO(vehicleTime,text,vehicle=False,plate=False):
     vehicleOwner = ['Arif','Tushar','Pratiksha','Shobhit','Praveen','Pranav']
     vehicleName = ['Honda','Activa','Hero','Ford','Maruti','WagonR']
     vehicleRegion = ['Ghaziabad','Meerut','Punjab','Gwalior','Jharkhand','Kanpur']
@@ -57,13 +57,22 @@ def RTO(vehicleTime,text):
     
 #Start-of-Firebase-Operations
      #for retrieving the time from the system 
-    
-    data = {"vno": str(text),
-            "name": str(vehicleOwner),
-            "make": str(vehicleName),
-            "region": str(vehicleRegion),
-            "vclass": str(vehicleClass)
-             }
+    if vehicle and plate:
+        data = {"vno": str(text),
+                "name": str(vehicleOwner),
+                "make": str(vehicleName),
+                "region": str(vehicleRegion),
+                "vclass": str(vehicleClass),
+                'vehicle':str(vehicle),
+                'plate':str(plate)
+                 }
+    else:
+        data = {"vno": str(text),
+                "name": str(vehicleOwner),
+                "make": str(vehicleName),
+                "region": str(vehicleRegion),
+                "vclass": str(vehicleClass)
+                 }
 
     print(f'Added {data}')
     
@@ -121,6 +130,10 @@ def bbox_transform(newbboxs):
 
 def main(yolo,yolo_plate):
     # For Images:
+    file = open('result_detection.txt','a')
+    file.write('Image,left,top,right,bottom,class\n')
+    a = open('result_recog.txt','a')
+    file.write('Image,OCR\n')
     for images in input_image_paths:
         print('Detecting Image')
         img = cv2.imread(images)
@@ -130,14 +143,12 @@ def main(yolo,yolo_plate):
         image = np.asarray(image)
         cv2.imwrite(r'C:\Users\TusharGoel\Desktop\Vehicle Object Tracking\Data\Source_Images\Test_Image_Detection_Results\{}.jpg'.format(image_name),image)
         file = open('result_detection.txt','a')
-
+        print(predicted_class)
+        print(car_boxes)
         for i,box in enumerate(car_boxes):
-            print(predicted_class[i])
-            if predicted_class[i] is None:
-                continue
-            else:
-                file.write(str(images)+'\t'+str(box[0])+'\t'+str(box[1])+'\t'+str(box[0]+box[3])+'\t'+str(box[1]+box[4])+'\t'+str(predicted_class[i]))
-            
+                print(predicted_class[i])
+                file.write(str(images.split('\\')[-1])+','+str(box[0])+','+str(box[1])+','+str(box[0]+box[3])+','+str(box[1]+box[2])+','+str(predicted_class[i])+'\n')
+                
         for pred in plate_pred:
             left = pred[0]
             top = pred[1]
@@ -147,7 +158,7 @@ def main(yolo,yolo_plate):
             img_dilate = image_preprocess(roi)
             cv2.imwrite('C:/Users/TusharGoel/Desktop/Extracted_Plate/{}.jpg'.format(image_name),img_dilate)
             img = cv2.imread('C:/Users/TusharGoel/Desktop/Extracted_Plate/{}.jpg'.format(image_name))
-            file.write(str(images)+'\t'+str(left)+'\t'+str(top)+'\t'+str(right)+'\t'+str(bottom)+'\t'+'plate')
+            file.write(str(images)+','+str(left)+','+str(top)+','+str(right)+','+str(bottom)+','+'plate')
                                     
             img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             # cv2.imshow("grayim",img_gray)
@@ -170,18 +181,16 @@ def main(yolo,yolo_plate):
             config = ('-l eng+hin --oem 1 --psm 3')
             text = pytesseract.image_to_string(img_dilate,config=config)
             print('License Plate Recognised: {}'.format(text))
+            currentDTKey = datetime.datetime.now()
             vehicleTime = currentDTKey.strftime("%H%M%S")
             
             a = open('result_recog.txt','a')
             if text=='':
-                a.write(str(images)+'\t'+'')
+                a.write(str(images.split('\\')[-1])+','+''+'\n')
             else:
-                a.write(str(images)+'\t'+str(text))
+                a.write(str(images.split('\\')[-1])+','+str(text)+'\n')
             RTO(vehicleTime,text)
-    df_detect = pd.read_csv('result_detection.txt',sep='\t')
-    df_detect.to_csv('detection.tsv')
-    df = pd.read_csv('result_recog.txt',sep='\t')
-    df.to_csv('recognition.tsv')
+ 
     
     # For Video:
     for videos in input_video_paths:
@@ -224,7 +233,7 @@ def main(yolo,yolo_plate):
             # mask = cv2.fillConvexPoly(frame, imgpts, (0,255,255))
             # cv2.addWeighted(frame,0.8,mask,0.2,0,frame)
             image = Image.fromarray(frame)
-            boxs,plate_prediction,image = yolo.detect_image(image) 
+            classs,boxs,plate_prediction,image = yolo.detect_image(image) 
             
             image = np.asarray(image)
             features = encoder(image,boxs)
@@ -279,7 +288,9 @@ def main(yolo,yolo_plate):
                         if (int(bbox[3]))>int(mousepoints[1][1]):
                             cv2.line(image,mousepoints[2],mousepoints[3],(0,255,255),2)
                             vehicle_text = 'Vehicle is Entering'
+                            
                             cv2.putText(image,vehicle_text,(100,100),cv2.FONT_HERSHEY_SIMPLEX,fontScale=1,color = (0,255,255),thickness = 2)
+                            currentDTKey = datetime.datetime.now()
                             vehicleTime = currentDTKey.strftime("%H%M%S")
                             img = cv2.imread('C:/Users/TusharGoel/Desktop/Extracted_Plate/plate_{}.png'.format(str(track.track_id)))       
                             img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -303,9 +314,12 @@ def main(yolo,yolo_plate):
                             config = ('-l eng+hin --oem 1 --psm 3')
                             text = pytesseract.image_to_string(img_dilate,config=config)
                             print('License Plate Recognised: {}'.format(text))
-                            RTO(vehicleTime,text)
+                            
                             storage.child("Entry").child(DTKey).child(vehicleTime).child('Car').put('C:/Users/TusharGoel/Desktop/Car_Extracted/car_{}.png'.format(str(track.track_id)))
                             storage.child("Entry").child(DTKey).child(vehicleTime).child('Plate').put('C:/Users/TusharGoel/Desktop/Extracted_Plate/plate_{}.png'.format(str(track.track_id)))
+                            vehicle_url = storage.child("Entry").child(DTKey).child(vehicleTime).child('Car').get_url(None)
+                            plate_url = storage.child("Entry").child(DTKey).child(vehicleTime).child('Plate').get_url(None)
+                            RTO(vehicleTime,text,vehicle=vehicle_url,plate=plate_url)
                             print('File Uploaded on FireBase')
 
             for det in detections:
