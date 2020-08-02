@@ -131,7 +131,7 @@ def bbox_transform(newbboxs):
 def main(yolo,yolo_plate):
     # For Images:
     file = open('result_detection.txt','a')
-    file.write('Image,left,top,right,bottom,class\n')
+    file.write('Image,BBox,Labels\n')
     a = open('result_recog.txt','a')
     file.write('Image,OCR\n')
     for images in input_image_paths:
@@ -147,18 +147,20 @@ def main(yolo,yolo_plate):
         print(car_boxes)
         for i,box in enumerate(car_boxes):
                 print(predicted_class[i])
-                file.write(str(images.split('\\')[-1])+','+str(box[0])+','+str(box[1])+','+str(box[0]+box[3])+','+str(box[1]+box[2])+','+str(predicted_class[i])+'\n')
+                labels = [str(box[0])+','+str(box[1])+','+str(box[0]+box[3])+','+str(box[1]+box[2])]
+                file.write(str(image_name)+','+f'{labels}'+','+str(predicted_class[i])+'\n')
                 
         for pred in plate_pred:
             left = pred[0]
             top = pred[1]
             right = pred[2]
             bottom = pred[3]
+            labels = [left,top,right,bottom]
             roi = image[top:bottom,left:right]
             img_dilate = image_preprocess(roi)
             cv2.imwrite('C:/Users/TusharGoel/Desktop/Extracted_Plate/{}.jpg'.format(image_name),img_dilate)
             img = cv2.imread('C:/Users/TusharGoel/Desktop/Extracted_Plate/{}.jpg'.format(image_name))
-            file.write(str(images)+','+str(left)+','+str(top)+','+str(right)+','+str(bottom)+','+'plate')
+            file.write(str(image_name)+','+f'{labels}'+','+'plate'+'\n')
                                     
             img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             # cv2.imshow("grayim",img_gray)
@@ -181,15 +183,15 @@ def main(yolo,yolo_plate):
             config = ('-l eng+hin --oem 1 --psm 3')
             text = pytesseract.image_to_string(img_dilate,config=config)
             print('License Plate Recognised: {}'.format(text))
-            currentDTKey = datetime.datetime.now()
-            vehicleTime = currentDTKey.strftime("%H%M%S")
+            # currentDTKey = datetime.datetime.now()
+            # vehicleTime = currentDTKey.strftime("%H%M%S")
             
             a = open('result_recog.txt','a')
             if text=='':
-                a.write(str(images.split('\\')[-1])+','+''+'\n')
+                a.write(str(image_name)+','+''+'\n')
             else:
-                a.write(str(images.split('\\')[-1])+','+str(text)+'\n')
-            RTO(vehicleTime,text)
+                a.write(str(image_name)+','+str(text)+'\n')
+            # RTO(vehicleTime,text)
  
     
     # For Video:
@@ -290,8 +292,8 @@ def main(yolo,yolo_plate):
                             vehicle_text = 'Vehicle is Entering'
                             
                             cv2.putText(image,vehicle_text,(100,100),cv2.FONT_HERSHEY_SIMPLEX,fontScale=1,color = (0,255,255),thickness = 2)
-                            currentDTKey = datetime.datetime.now()
-                            vehicleTime = currentDTKey.strftime("%H%M%S")
+                            current = datetime.datetime.now()
+                            vehicleTime = current.strftime("%H%M%S")
                             img = cv2.imread('C:/Users/TusharGoel/Desktop/Extracted_Plate/plate_{}.png'.format(str(track.track_id)))       
                             img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
                             # cv2.imshow("grayim",img_gray)

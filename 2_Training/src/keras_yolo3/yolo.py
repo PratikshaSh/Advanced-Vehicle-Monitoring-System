@@ -43,7 +43,7 @@ currentDTKey = datetime.datetime.now() #For retreiving the key from The system d
 
 DTKey = currentDTKey.strftime("%d%m%Y")
 
-db.child("Entry").set(DTKey)
+
 login_data={"r1[]":"PB22G",
             "r2":"4565",
             "auth":"Y29tLmRlbHVzaW9uYWwudmVoaWNsZWluZm8="}
