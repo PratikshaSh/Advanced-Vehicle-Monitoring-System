@@ -41,42 +41,37 @@ DTKey = currentDTKey.strftime("%d%m%Y")
 
 warnings.filterwarnings('ignore')
 
+
+
 def RTO(vehicleTime,text,vehicle=False,plate=False):
-    vehicleOwner = ['Arif','Tushar','Pratiksha','Shobhit','Praveen','Pranav']
-    vehicleName = ['Honda','Activa','Hero','Ford','Maruti','WagonR']
-    vehicleRegion = ['Ghaziabad','Meerut','Punjab','Gwalior','Jharkhand','Kanpur']
-    vehicleClass = ['Car','Scooter','Bike','Truck','Bus']
     
-    currentDT = datetime.datetime.now()
-    
-    
-    vehicleOwner = random.choice(vehicleOwner)
-    vehicleName = random.choice(vehicleName)
-    vehicleRegion = random.choice(vehicleRegion)
-    vehicleClass = random.choice(vehicleClass)
     
 #Start-of-Firebase-Operations
      #for retrieving the time from the system 
     if vehicle and plate:
         data = {"vno": str(text),
-                "name": str(vehicleOwner),
-                "make": str(vehicleName),
-                "region": str(vehicleRegion),
-                "vclass": str(vehicleClass),
-                'vehicle':str(vehicle),
+                "name": str('Tushar Goel'),
+                "make": str('Honda'),
+                "region": str('Meerut'),
+                "vclass": str('Car'),
+                'image':str(vehicle),
                 'plate':str(plate)
                  }
     else:
         data = {"vno": str(text),
-                "name": str(vehicleOwner),
-                "make": str(vehicleName),
-                "region": str(vehicleRegion),
-                "vclass": str(vehicleClass)
-                 }
+                "name": str('Tushar Goel'),
+                "make": str('Honda'),
+                "region": str('Meerut'),
+                "vclass": str('Car')}
 
     print(f'Added {data}')
+
+    vehicle = {"image":str(vehicle),
+                "fine": str(100),
+            }
     
     db.child("Entry").child(DTKey).child(vehicleTime).set(data)
+    db.child('Vechiles').child('UP 2478').child(vehicleTime).set(vehicle)
 
 # transform newbboxs of (n_object,4,2) np array s.t. return_boxs = bbox_transform(newbboxs)
 # newbboxs[i,:,:] = np.array([[xmin,ymin],[xmin+boxw,ymin],[xmin,ymin+boxh],[xmin+boxw,ymin+boxh]]).astype(float)
