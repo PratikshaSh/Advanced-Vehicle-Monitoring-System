@@ -68,15 +68,12 @@ https://www.youtube.com/watch?v=A1jiDW4kLoo
  - **<u>Step 2:</u>** If you want to Detect the Files just go to **training/src/keras_yolo3/Tracking.py**
  - **<u>Step 3:</u>** If you have put **Video on Detection** , It would be open for first **20 seconds to click on the four points in frame**...for creating Two line, which will help **model to Track the vehicles to focus on specific vehicle in crowd of vehicles.**
 
-<h1 id="Samples">Samples From the Code</h1>
-<img src="https://i.imgur.com/fNeMqZ4.png" height=100>
 Detection Image Before crossing the line</img>
 <hr color='red' >
-<img src="https://i.imgur.com/dZcvPoe.png">Detection image after crossing the line which turns into Green
+<img src="Screenshot (191).png">Detection and Tracking ID on each vehicle before crossing the vehicle.</img>
 <hr color='red'>
-<img src="https://i.imgur.com/XYDqFjv.png">Top Left Corner window showing the Detected Number plate of the Vehicle</img>
-<hr color='red'>
-<img src="https://i.imgur.com/JktxvsB.png"> Cropped and Filtered photo of the License Plate .
+<img src="Screenshot (192).png">After Crossing the line, it turns green and Vehicle is entering message will be flashed and Update will be made on database with image of vehicle and plate</img>
+
 <h1 id="App">Vehicle Detection App<h1>
 
  - Starting of the app ("https://i.imgur.com/h9ytWbJ.jpg")
