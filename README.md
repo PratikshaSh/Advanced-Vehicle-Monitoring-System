@@ -11,7 +11,6 @@
 - Improved best Confidence Score refining mechanism 
 - Improved filter for image processing and deskewing algorithms used
 
-# ADVANCED VEHICLE MONITORING
 <h4>Using YOLOv3 and Pytesseract (Team: Error_404) (College: NIT Jalandhar)</h4>
 
 **Problem Statement :** Create an affordable Solution through image processing of the number plates of vehicles for the **Detection , Identification and Monitoring** of Vehicles in Different scenario.
