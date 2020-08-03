@@ -124,6 +124,7 @@ def bbox_transform(newbboxs):
     return return_boxs
 
 def main(yolo,yolo_plate):
+    global currentDTKey
     # For Images:
     file = open('result_detection.txt','a')
     file.write('Image,BBox,Labels\n')
@@ -138,8 +139,7 @@ def main(yolo,yolo_plate):
         image = np.asarray(image)
         cv2.imwrite(r'C:\Users\TusharGoel\Desktop\Vehicle Object Tracking\Data\Source_Images\Test_Image_Detection_Results\{}.jpg'.format(image_name),image)
         file = open('result_detection.txt','a')
-        print(predicted_class)
-        print(car_boxes)
+        
         for i,box in enumerate(car_boxes):
                 print(predicted_class[i])
                 labels = [str(box[0])+','+str(box[1])+','+str(box[0]+box[3])+','+str(box[1]+box[2])]
@@ -178,15 +178,15 @@ def main(yolo,yolo_plate):
             config = ('-l eng+hin --oem 1 --psm 3')
             text = pytesseract.image_to_string(img_dilate,config=config)
             print('License Plate Recognised: {}'.format(text))
-            # currentDTKey = datetime.datetime.now()
-            # vehicleTime = currentDTKey.strftime("%H%M%S")
+            
+            vehicleTime = currentDTKey.strftime("%H%M%S")
             
             a = open('result_recog.txt','a')
             if text=='':
                 a.write(str(image_name)+','+''+'\n')
             else:
                 a.write(str(image_name)+','+str(text)+'\n')
-            # RTO(vehicleTime,text)
+            RTO(vehicleTime,text)
  
     
     # For Video:
@@ -287,8 +287,8 @@ def main(yolo,yolo_plate):
                             vehicle_text = 'Vehicle is Entering'
                             
                             cv2.putText(image,vehicle_text,(100,100),cv2.FONT_HERSHEY_SIMPLEX,fontScale=1,color = (0,255,255),thickness = 2)
-                            current = datetime.datetime.now()
-                            vehicleTime = current.strftime("%H%M%S")
+                           
+                            vehicleTime = currentDTKey.strftime("%H%M%S")
                             img = cv2.imread('C:/Users/TusharGoel/Desktop/Extracted_Plate/plate_{}.png'.format(str(track.track_id)))       
                             img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
                             # cv2.imshow("grayim",img_gray)
