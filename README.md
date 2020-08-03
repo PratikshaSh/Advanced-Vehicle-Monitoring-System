@@ -66,8 +66,8 @@ https://www.youtube.com/watch?v=A1jiDW4kLoo
 		 The weight file for YoloV4 will be found at: http://www.mediafire.com/file/4t1ztddl0oy9dod/Model_Weights.zip/file
  - **<u>Step 0:</u>** Change the locations of the file in the code wherever required.
  - **<u>Step 1:</u>** Images and Video to Detect should be kept in **Data/Source Images/Test Images/**
- - **<u>Step 2:</u>** If you want to Detect the Files just go to **Inference/Detector.py**
- - **<u>Step 3:</u>** If you have put **Video on Detection** , It would be open for first **15 seconds to click on the two points in frame**...for creating a line, then it will detected itself
+ - **<u>Step 2:</u>** If you want to Detect the Files just go to **training/src/keras_yolo3/Tracking.py**
+ - **<u>Step 3:</u>** If you have put **Video on Detection** , It would be open for first **20 seconds to click on the four points in frame**...for creating Two line, which will help **model to Track the vehicles to focus on specific vehicle in crowd of vehicles.**
 
 <h1 id="Samples">Samples From the Code</h1>
 <img src="https://i.imgur.com/fNeMqZ4.png" height=100>
