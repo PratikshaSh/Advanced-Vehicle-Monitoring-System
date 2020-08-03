@@ -1,7 +1,7 @@
-### Update v1.11
-- Added support for Hindi OCR 
-
+# AVSAM ( Advanced Vehicle Survelliance and Monitoring )
+<hr>
 ### Update v1.1
+- Hindi OCR (see steps below to implement)
 - Improved retrained model with a vast dataset of 5000+ 
 - FR secured was 0.97 on 100 samples (previously 0.96)
 - Improved system for handling unrecognized number plate by sending a push notification to the concerned personnel with the image and the text fields for manually entering the plate number by looking at the picture, before the data is retreived from the RTO.
