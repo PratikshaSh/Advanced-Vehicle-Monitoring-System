@@ -60,9 +60,6 @@ https://www.youtube.com/watch?v=A1jiDW4kLoo
 <h1 id="steps">How to Run</h1>
 		
 
- - Download the Model weights **trained_weights_final.h5** and **yolo.h5** from here:
-		 [trained_weights_final.h5](https://mega.nz/#!Q2QC0SyC!IqcNH6iVcLgr5NK2W1cH5iXl5Dm4H3jlrPM3x5hI1yI) and [yolo.h5](https://mega.nz/#!83RgCCCQ!I3gQAqU80R75YzhkfO2Vne4OU1A4fi8SCNvWaL3qQfQ) and put them in **Data/Model Weights/**
-		 The weight file for YoloV4 will be found at: http://www.mediafire.com/file/4t1ztddl0oy9dod/Model_Weights.zip/file
  - **<u>Step 0:</u>** Change the locations of the file in the code wherever required.
  - **<u>Step 1:</u>** Images and Video to Detect should be kept in **Data/Source Images/Test Images/**
  - **<u>Step 2:</u>** If you want to Detect the Files just go to **training/src/keras_yolo3/Tracking.py**
@@ -85,7 +82,7 @@ Detection Image Before crossing the line</img>
 
  - When we run the model , Number plate will be detected with an average **accuracy of 97%** of the vehicles crossing the Line drawn , Then the Number Plate will be cropped and filtered and passed through The OCR and we will get the Number plate. Then the Numbe Plate we get , then Processed through the RTO Database and If the Data is Found , Then it will be updated in the Storage as well as App too. But If No data is Found in the RTO database , then it will cause an Alert in the Admin Database in the app , and can only be resolved by Manually entering the Number plate in the App .
  
-Check the github repository for android app based on the above model at  https://github.com/praveen4030/CB31_ERROR_404_WIMDR
+
 ## Troubleshooting
 
 0. If you encounter any error, please make sure you follow the instructions **exactly** (word by word). Once you are familiar with the code, you're welcome to modify it as needed but in order to minimize error, I encourage you to not deviate from the instructions above.  
